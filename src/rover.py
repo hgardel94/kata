@@ -1,4 +1,3 @@
-# rover.py
 from command.move_command import MoveCommand
 from command.turn_command import TurnCommand
 from orientation.north_state import NorthState

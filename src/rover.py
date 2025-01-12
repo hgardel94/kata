@@ -4,8 +4,16 @@ from orientation.north_state import NorthState
 from orientation.south_state import SouthState
 from orientation.east_state import EastState
 from orientation.west_state import WestState
+from command.command import Command
 
 class Rover:
+    
+    COMMAND_MAP = {
+            'f': 'move_forward',
+            'b': 'move_backward',
+            'r': 'turn_right',
+            'l': 'turn_left'
+        }
     
     ORIENTATION_CLASSES = {
         'NorthState': NorthState,
@@ -19,17 +27,13 @@ class Rover:
         self.orientation = orientation
         self.planet = planet
         self.command_history = []
-        self.command_map = {
-            'f': self.move_forward,
-            'b': self.move_backward,
-            'r': self.turn_right,
-            'l': self.turn_left
-        }
 
     def execute_command(self, commands):
         for command in commands:
-            action = self.command_map.get(command)
-            if action:
+            method_name = self.COMMAND_MAP.get(command)
+            action = self.COMMAND_MAP.get(command)
+            if method_name:
+                action = getattr(self, method_name)
                 action()
 
     def undo_last_command(self):
